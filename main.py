@@ -13,7 +13,7 @@ class Message(BaseModel):
 
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index1.html", {"request": request})
 
 @app.post("/chat")
 async def chat(message: Message):
@@ -22,15 +22,7 @@ async def chat(message: Message):
 
     return {"message": response}
 
-@app.post("/process_voice")
-async def process_voice(voice_input: dict):
-    # print(voice_input)
-    text = voice_input.get('input')
-    # Process the voice input as needed
-    # print("Voice input:", text)
-    response = collect_messages_text(text)
-    # print(response)
-    return {"message": response}
+
 
 if __name__ == "__main__":
     import uvicorn
