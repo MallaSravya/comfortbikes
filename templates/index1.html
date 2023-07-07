@@ -2,213 +2,286 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    <title>Chatbot</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
-
         * {
-            color: #ffffff;
-            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #313131;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 400;
+            font-size: 100%;
+            background: #F1F1F1;
+        }
+
+        *, html {
+            --primaryGradient: linear-gradient(93.12deg, #581B98 0.52%, #9C1DE7 100%);
+            --secondaryGradient: linear-gradient(268.91deg, #581B98 -2.14%, #9C1DE7 99.69%);
+            --primaryBoxShadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+            --secondaryBoxShadow: 0px -10px 15px rgba(0, 0, 0, 0.1);
+            --primary: #581B98;
+        }
+
+        /* CHATBOX
+        =============== */
+        .chatbox {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+        }
+
+        /* CONTENT IS CLOSE */
+        .chatbox__support {
             display: flex;
+            flex-direction: column;
+            background: #eee;
+            width: 300px;
+            height: 350px;
+            z-index: -123456;
+            opacity: 0;
+            transition: all .5s ease-in-out;
         }
 
-        h1 {
-            font-size: 33px;
-            font-weight: 600;
-            padding: 200px 0;
+        /* CONTENT ISOPEN */
+        .chatbox--active {
+            transform: translateY(-40px);
+            z-index: 123456;
+            opacity: 1;
+
         }
 
-        .side-bar {
-            background-color: #202123;
-            width: 244px;
-            height: 100vh;
-        }
-        #user-message {
-  flex-grow: 1;
-  padding: 2%;
-  border-radius: 20px;
-  border: 2px solid tomato;
-  width: 50%; /* Adjust the width as needed */
-  margin-bottom: 10px;
-}
-
-        .main {
-            align-items: center;
-            text-align: center;
-            height: 100vh;
-            width: 100%;
-        }
-        #output {
-  width: 100%;
-  background-image: linear-gradient(to right, rgba(237, 155, 125, 0.789), rgba(237, 155, 125, 0.258));
-  padding: 5px;
-  border: 2px solid tomato;
-  border-radius: 10px;
-  margin-top: 2%;
-  height: 600px;
-  border: 1px solid #ccc;
-  overflow-y:scroll; /* Add overflow-y property to enable vertical scrolling */
-}
-
-        .history {
-            padding: 10px;
-            margin: 10px;
-            height: 100%;
+        /* BUTTON */
+        .chatbox__button {
+            text-align: right;
         }
 
-        .history p {
+        .send__button {
+            padding: 6px;
+            background: transparent;
+            border: none;
+            outline: none;
             cursor: pointer;
         }
 
-        .main h1 {
-            padding-top: 0;
+
+        /* HEADER */
+        .chatbox__header {
+            position: sticky;
+            top: 0;
+            background: orange;
         }
 
-        .bottom-section {
-            width: 100%;
+        /* MESSAGES */
+        .chatbox__messages {
+            margin-top: auto;
+            display: flex;
+            overflow-y: scroll;
+            flex-direction: column-reverse;
+        }
+
+        .messages__item {
+            background: orange;
+            max-width: 60.6%;
+            width: fit-content;
+        }
+
+        .messages__item--operator {
+            margin-left: auto;
+        }
+
+        .messages__item--visitor {
+            margin-right: auto;
+        }
+
+        /* FOOTER */
+        .chatbox__footer {
+            position: sticky;
+            bottom: 0;
+        }
+
+        .chatbox__support {
+            background: #f9f9f9;
+            height: 450px;
+            width: 350px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        /* HEADER */
+        .chatbox__header {
+            background: var(--primaryGradient);
+            display: flex;
+            flex-direction: row;
             align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: var(--primaryBoxShadow);
         }
 
-        .info {
-            color: rgba(225, 225, 225, 0.5);
-            font-size: 11px;
-            padding: 10px;
+        .chatbox__image--header {
+            margin-right: 10px;
         }
 
-        input {
+        .chatbox__heading--header {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .chatbox__description--header {
+            font-size: .9rem;
+            color: white;
+        }
+
+        /* Messages */
+        .chatbox__messages {
+            padding: 0 20px;
+        }
+
+        .messages__item {
+            margin-top: 10px;
+            background: #E0E0E0;
+            padding: 8px 12px;
+            max-width: 70%;
+        }
+
+        .messages__item--visitor,
+        .messages__item--typing {
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .messages__item--operator {
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            background: var(--primary);
+            color: white;
+        }
+
+        /* FOOTER */
+        .chatbox__footer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px;
+            background: var(--secondaryGradient);
+            box-shadow: var(--secondaryBoxShadow);
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .chatbox__footer input {
+            width: 80%;
             border: none;
-            background-color: rgba(225, 225, 225, 0.05);
-            width: 100%;
-            font-size: 17px;
-            padding: 12px 15px;
-            border-radius: 5px;
+            padding: 10px 10px;
+            border-radius: 30px;
+            text-align: left;
         }
 
-        input:focus {
+        .chatbox__send--footer {
+            color: white;
+        }
+
+        .chatbox__button button,
+        .chatbox__button button:focus,
+        .chatbox__button button:visited {
+            padding: 10px;
+            background: white;
+            border: none;
             outline: none;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            border-bottom-left-radius: 50px;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
-        .input-container{
-            position: relative;
-            width: 100%;
-            max-width: 650px;
+        .loader-shell {
+            background-color: #E0E0E0;
+            width: 40px;
+            height: 35px;
+            padding-left: 9px;
+            padding-top: 4px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .loader {
+        /* the colors */
+        --c1: #ffffff;
+        --c2: #ffffff;
+        --c3: #ffffff;
+        --c4: #ffffff;
+        /**/
+        
+        width: 25px; /* control the size */
+        aspect-ratio: 8/5;
+        --_g: no-repeat radial-gradient(#000 68%,#0000 71%);
+        -webkit-mask: var(--_g),var(--_g),var(--_g);
+        -webkit-mask-size: 25% 40%;
+        background: 
+            conic-gradient(var(--c1) 50%,var(--c2) 0) no-repeat,
+            conic-gradient(var(--c3) 50%,var(--c4) 0) no-repeat;
+            margin-top: 5px;
+        background-size: 200% 50%;
+        animation: 
+            back 4s infinite steps(1),
+            load 2s infinite;
         }
 
-        button {
-            border: solid 0.5px rgba(225, 225, 225, 0.5);
-            background-color: transparent;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
+        @keyframes load {
+        0%    {-webkit-mask-position: 0% 0%  ,50% 0%  ,100% 0%  }
+        16.67%{-webkit-mask-position: 0% 100%,50% 0%  ,100% 0%  }
+        33.33%{-webkit-mask-position: 0% 100%,50% 100%,100% 0%  }
+        50%   {-webkit-mask-position: 0% 100%,50% 100%,100% 100%}
+        66.67%{-webkit-mask-position: 0% 0%  ,50% 100%,100% 100%}
+        83.33%{-webkit-mask-position: 0% 0%  ,50% 0%  ,100% 100%}
+        100%  {-webkit-mask-position: 0% 0%  ,50% 0%  ,100% 0%  }
         }
-
-        select {
-            border: solid 0.5px rgba(225, 225, 225, 0.5);
-            background-color: transparent;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
+        @keyframes back {
+        0%,
+        100%{background-position: 0%   0%,0%   100%}
+        25% {background-position: 100% 0%,0%   100%}
+        50% {background-position: 100% 0%,100% 100%}
+        75% {background-position: 0%   0%,100% 100%}
         }
-
-        option {
-            background-color: transparent;
-        }
-
-        nav {
-            border-top: solid 0.5px rgba(225, 225, 225, 0.5);
-            padding: 10px;
-            margin: 10px;
-        }
-        .user-message{
-  font-family: "Nunito", sans-serif;
-  background-color: rgba(216, 46, 12, 0.542);
-  /* light color */
-  text-align: left;
-  /* changed text align to left */
-  padding: 10px;
-  /* added padding */
-  color: white;
-  width: fit-content;
-  float: right;
-  margin-top: 2%;
-  margin-bottom: 2%;
-  margin-right: 5%;
-  align-items: center;
-  font-style: italic;
-  border-radius: 20px 15px 0px 20px;
-  word-wrap: break-word; /* Add word-wrap property to wrap long messages */
-}
-
-.bot-message {
-  font-family: "Nunito", sans-serif;
-  background-color: rgba(224, 142, 126, 0.647);
-  /* light color */
-  text-align: left;
-  /* changed text align to left */
-  padding: 10px;
-  /* added padding */
-  color: white;
-  float:left;
-  width: fit-content;
-  margin-left: 5%;
-  margin-top: 5%;
-  margin-right: 5%;
-  margin-bottom: 2%;
-  align-items: center;
-  font-style: italic;
-  border-radius: 20px 15px 0px 20px;
-  word-wrap: break-word; /* Add word-wrap property to wrap long messages */
-}
-
-.user-message img,
-.bot-message img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 20px;
-}
-
-
     </style>
 </head>
 <body>
-    <section class="side-bar d-flex flex-column justify-content-between">
-        <button>Clear History</button>
-        <div class="history d-flex flex-column"></div>
-        <nav>
-            <p>Made by Jayanth</p>
-        </nav>
-    </section>
-    <section class="main d-flex flex-column justify-content-between">
-        <header class="mt-5">
-            <h1>JAY GPT</h1>
-        </header>
-        <div id="output"></div>
-        <footer>
-            <div class="bottom-section d-flex flex-row justify-content-centre mb-3">
-                <div class="input-container shadow">
-                    <input id="input"/>
+    <div class="container">
+        <div class="chatbox">
+            <div class="chatbox__support">
+                <div class="chatbox__header">
+                    <div class="chatbox__image--header">
+                        <img src="" alt="image">
+                    </div>
+                    <div class="chatbox__content--header">
+                        <h4 class="chatbox__heading--header">Chat support</h4>
+                        <p class="chatbox__description--header">Hi. This is ComfortBikes bot. How can I help you?</p>
+                    </div>
                 </div>
-                <button id="submit" type="button">Submit</button>
+                <div class="chatbox__messages">
+                    <div></div>
+                </div>
+                <div class="chatbox__footer">
+                    <input type="text" placeholder="Write a message...">
+                    <button class="chatbox__send--footer send__button">Send</button>
+                </div>
             </div>
-            <p class="info">
-                Free Research Preview. ChatGPT may produce 
-                inaccurate information about people, places, 
-                or facts. ChatGPT May 24 Version
-            </p>
-        </footer>
-    </section>
+            <div class="chatbox__button">
+                <button><img src="" alt="image"/></button>
+            </div>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
     <script src="static/JS/script2.js"> </script>
 </body>

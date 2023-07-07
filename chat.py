@@ -65,6 +65,7 @@ Battery life: 800 recharge cycles and 80% DOD after
  Breaking: Regenerative, Dual Disk
  Weight:19kg only
  Cycle Condition: Brand new sealed in box. 85%assembled
+ Type: bicycle
 
 
 Comfort Bike G9:\n\
@@ -76,6 +77,7 @@ Battery life: 2000 recharge cycles and 80%Dod
  Breaking: Regenerative dual disk.
  Weight:32kgs
  Cycle Condition:Brand new sealed in box. 85% assembled.
+ Type: bicycle
 
 Comfort Bike M9 :\
  Battery life: 2000 recharge cycles and 80% DOD after.
@@ -86,6 +88,7 @@ Comfort Bike M9 :\
  Breaking: Regenerative dual disk.
  Weight: 90kgs
  Cycle condition: Brand new sealed in box. 85% assembled
+ Type: tri-cycle
 
 
 Comfort Bike F9:\
@@ -100,6 +103,7 @@ Battery life: 800 recharge cycles and 80% DOD after.
  USB Charger: Available
  Weight: 22 kg only
  Cycle Condition: Brand new sealed in box. 85% assembled
+ Type: bicycle
 
 Contact details of office:\
 phone : 99999999999\

@@ -1,60 +1,87 @@
-const chatContainer = document.getElementById("output");
-const userMessageInput = document.getElementById("input");
-const sendButton = document.getElementById("submit");
+class Chatbox {
+    constructor() {
+        this.args = {
+            openButton : document.querySelector('.chatbox__button'),
+            chatBox : document.querySelector('.chatbox__support'),
+            sendButton : document.querySelector('.send__button'),
+        }
 
-sendButton.addEventListener("click", sendMessage);
+        this.state = false;
+        this.messages = [];
+    };
 
-userMessageInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
-});
+    display() {
+        const {openButton, chatBox, sendButton} = this.args;
 
+        openButton.addEventListener('click', () => this.toggleState(chatBox))
+        sendButton.addEventListener('click', () => this.onSendButton(chatBox))
+        console.log("stage-1")
 
-function appendMessage(role, content) {
-    const messageElement = document.createElement("div");
-    messageElement.classList.add("message");
-
-    if (role === "User") {
-        messageElement.classList.add("user-message");
-        messageElement.innerHTML = `
-            <img src="https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png" alt="user icon">
-            <span>${content}</span>
-        `;
-    } else if (role === "Bot") {
-        messageElement.classList.add("bot-message");
-        messageElement.innerHTML = `
-            <img src="https://m.media-amazon.com/images/I/61HmveTPTsL.jpg" alt="bot icon">
-            <span>${content}</span>
-        `;
+        const node = chatBox.querySelector('input');
+        node.addEventListener('keyup', ({key}) => {
+            if(key === "Enter"){
+                this.onSendButton(chatBox)
+            }
+        })
     }
 
-    chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    toggleState(chatBox) {
+        this.state = !this.state;
+
+        if(this.state){
+            chatBox.classList.add('chatbox--active')
+        } else {
+            chatBox.classList.remove('chatbox--active')
+        }
+    }
+
+    onSendButton(chatBox) {
+        var textField = chatBox.querySelector('input');
+        let text1 = textField.value
+        if(text1 === ""){
+            return;
+        }
+
+        let msg1 = { name: "User", message: text1 }
+        this.messages.push(msg1);
+        this.updateChatText(chatBox)
+        textField.value = ''
+
+        fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: text1 })
+        })
+        .then(r => r.json())
+        .then(r => {
+            let msg2 = { name: "Bot", message: r.message};
+            this.messages.push(msg2);
+            console.log(msg2)
+            this.updateChatText(chatBox)
+        }).catch((error) => {
+            console.log('Error:', error);
+            this.updateChatText(chatBox)
+        });
+    }
+
+    updateChatText(chatBox) {
+        var html = '';
+
+        this.messages.slice().reverse().forEach(function(item) {
+            if(item.name === "Bot")
+            {
+                html += '<div class="messages__item messages__item--visitor">' + item.message + '</div>'
+            } else {
+                html += '<div class="messages__item messages__item--operator">' + item.message + '</div>'
+            }
+        });
+
+        const chatmessage = chatBox.querySelector('.chatbox__messages')
+        chatmessage.innerHTML = html;
+    }
 }
 
-async function sendMessage() {
-    const userMessage = userMessageInput.value;
-    if (userMessage.trim() === "") {
-        return;
-    }
-
-    appendMessage("User", userMessage);
-    userMessageInput.value = "";
-    userMessageInput.focus();
-
-    const response = await fetch("/chat", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ content: userMessage })
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        const botMessage = data.message;
-        appendMessage("Bot", botMessage);
-        speakText(botMessage);
-    }
-}
+const chatbox = new Chatbox();
+chatbox.display();
