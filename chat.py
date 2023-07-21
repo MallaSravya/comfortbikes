@@ -1,7 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
-
+from twilio.rest import Client
 load_dotenv()
 
 openai.api_key = os.getenv("API_KEY")
@@ -26,89 +26,77 @@ After displaying the menu you should ask
 Make sure that the payment is made by the customer. \
 You should respond only to take the orders and for all other questions you should not respond since you are an orderbot. \
 You respond in a short, very conversational friendly style. \
-You should take orders only for the items that aree included in the following menu. \
+You should take orders only for the items that are included in the following menu. \
 If the user asks for menu or services only show names, but not description.\
 Show the description only if user asks for it.\
 If the user wants to book a bike give him the contact details and ask wether it for delivery or Takeaway\
 If takeaway is choosen give him the address and contact details\
 If delivery is choosen ask for address and give the contact details for further assistance\
-End the chat by showing the final bill by adding  8% of total money as GST\
-Display name of each item in new line\
-The menu includes \
-Bikes\
-Spare parts\
-Services\
+Show the final bill by adding  8% of total money as GST\
+Show the final bill in a JSON format\
 
 The bikes include :\
-Comfort Bike L9 - 31000 INR \
-Comfort Bike G9 - 40000 INR \
-Comfort Bike M9- 60000 INR \
-Comfort Bike F9- 36000 INR\
-
-
-
-The spare parts include\
-partA \
-partB \
-partC \
-partD \
-partE \
+Comfort Bike L9 \
+Comfort Bike G9\
+Comfort Bike M9 \
+Comfort Bike F9\
 
 Descriptions for bikes :\
-Comfort Bike L9:\n\
-Battery life: 800 recharge cycles and 80% DOD after
- Frame Material: Alloy steel, Aluminium
- Battery: 5.5Ah Li ion
- Motor: 250W 36V Brushless geared.
- Speed: 25 Kmph
- Range: 30 to 40 km depending on level of riding
- Breaking: Regenerative, Dual Disk
- Weight:19kg only
- Cycle Condition: Brand new sealed in box. 85%assembled
- Type: bicycle
+Comfort Bike F9: 
+Cost - 36000 INR\
+Battery life - 800 Recharge Cycles and 80% DOD After.\
+Frame Material - Alloy steel, Aluminium \
+Battery - 5.2Ah LifePO4 (In bluit), 12Ah Deatchble Battery\
+Motor - 350W 48 BLDC Hub Motor\
+Speed - 25 Kmph to 40km\
+Range - 40to 60 km Depending On Level of Riding\
+Breaking - Regenerative, Dual Disk\
+Display - ED\
+USB Charger - Available\
+Weight - 22 kg only\
+Cycle condition - Brand New Sealed in Box. 85% Assembled\
 
+Comfort bike M9 :\
+Cost - 60000 INR\
+Battery Life - 2000 Recharge Cycles and 80% DOD after\
+Frame material - Alloy Steel, Aluminium \
+Battery - 28 Ah Lead-acid (gel)\
+Motor - 350W 48 PMDC motor \
+Speed - 25 to 40 Kmph\
+Range - 30 to 40 km Depending On Level of Riding\
+Breaking - Regenerative, Dual Disk\
+Weight - 60kg \
+Cycle Condition - Brand new Sealed in Box. 85% Assembled\
 
-Comfort Bike G9:\n\
-Battery life: 2000 recharge cycles and 80%Dod
- Frame material:Alloy steel,Aluminium.
- Battery: 48V LFP 12ah (prismatic)
- Motor: 350W 48V
- Range: 75km
- Breaking: Regenerative dual disk.
- Weight:32kgs
- Cycle Condition:Brand new sealed in box. 85% assembled.
- Type: bicycle
+Comfort Bike G9: \
+Cost - 59999 INR \
+Battery Life - 800 Recharge Cycles and 80% DOD after\
+Frame material -  Alloy Steel, Aluminium \
+Battery  - 13Ah Li ion (In bluit), 12Ah Deatchble Battery\
+Motor - 250W 36V BLDC Hub Motor\
+Speed - 25 to 35 Kmph\
+Range - 60 to 80 km Depending On Level of Riding\
+Breaking - Regenerative, Dual Disk \
+Weight - 19kg Only \
+Cycle Condition - Brand new Sealed in Box. 85% Assembled\
 
-Comfort Bike M9 :\
- Battery life: 2000 recharge cycles and 80% DOD after.
- Frame Material: Alloy steel,Aluminium
- Motor: 1000W 48V Brushless motor(Mid drive)
- Speed : 25kmph to 40kmph
- Range: 50km
- Breaking: Regenerative dual disk.
- Weight: 90kgs
- Cycle condition: Brand new sealed in box. 85% assembled
- Type: tri-cycle
+Comfort Bike L9: \
+Cost - 24999 INR \
+Battery Life - 800 Recharge Cycles and 80% DOD after\
+Frame materal - Alloy Steel, Aluminium\
+Battery - 18Ah Li ion\
+Motor - 250W 24V PMDC Motor\
+Speed - 25 Kmph\
+Range - 25 to 30 km Depending On Level of Riding\
+Breaking - Regenerative, Dual Disk\
+Weight - 19kg Only\
+Cycle Condition - Brand new Sealed in Box. 85% Assembled\
 
-
-Comfort Bike F9:\
-Battery life: 800 recharge cycles and 80% DOD after.
- Frame Material: Alloy steel,Aluminium
- Battery: 12Ah Li ion
- Motor: 350W 36V Brushless geared.
- Speed 25 Kmph to 40km
- Range: 40to 50 km depending on level of riding
- Breaking: Regenerative, Dual Disk
- Display: LED
- USB Charger: Available
- Weight: 22 kg only
- Cycle Condition: Brand new sealed in box. 85% assembled
- Type: bicycle
 
 Contact details of office:\
 phone : 99999999999\
 whatsapp : 9999999999\
-address : xxxxxxxxxxxx\
+address : Comfort bikes, siripuram, visakhapatnam\
 Owner : XYZ\
 Shop timings 9AM to 9PM\
 
@@ -122,9 +110,26 @@ def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0)
     )
     return response.choices[0].message["content"]
 
-def collect_messages_text(msg):
+def collect_messages_text(msg): 
     prompt = msg
+    if msg=="bill":
+        prompt = "i want final bill in JSON format only"
+        context.append({'role':'user', 'content':f"{prompt}"})
+        response = get_completion_from_messages(context) 
+        context.append({'role':'assistant', 'content':f"{response}"})
+        return response
     context.append({'role':'user', 'content':f"{prompt}"})
     response = get_completion_from_messages(context) 
     context.append({'role':'assistant', 'content':f"{response}"})
     return response
+def whatsappmsg():
+    account_sid = ''
+    auth_token = ''
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+    from_='whatsapp:+14155238886',
+    body='Your appointment is coming up on July 21 at 3PM',
+    to='whatsapp:+919553405309'
+    )
+    print(message.sid)
+

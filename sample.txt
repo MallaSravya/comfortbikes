@@ -1,0 +1,50 @@
+F9 
+Cost : 36000 INR
+Battery life :800 Recharge Cycles and 80% DOD After.
+Frame Material : Alloy steel, Aluminium 
+Battery :5.2Ah LifePO4 (In bluit), 12Ah Deatchble Battery
+Motor : 350W 48 BLDC Hub Motor
+Speed : 25 Kmph to 40km
+Range : 40to 60 km Depending On Level of Riding
+Breaking : Regenerative, Dual Disk
+Display : ED
+USB Charger : Available
+Weight : 22 kgonly
+Cycle condition : Brand New Sealed in Box. 85% Assembled
+
+M9 
+Cost : 60000 INR
+Battery Life :2000 Recharge Cycles and 80% DOD after
+Frame material : Alloy Steel, Aluminium 
+Battery :28 Ah Lead-acid (gel)
+Motor :350W 48 PMDC motor 
+Speed :25 to 40 Kmph
+Range :30 to 40 km Depending On Level of Riding
+Breaking : Regenerative, Dual Disk 60kg Only
+Weight : 60kg 
+Cycle Condition: Brand new Sealed in Box. 85% Assembled
+
+G9 
+Cost : 59999 INR
+Battery Life :800 Recharge Cycles and 80% DOD after
+Frame material :  Alloy Steel, Aluminium
+Battery  : 13Ah Li ion (In bluit), 12Ah Deatchble Battery
+Motor :250W 36V BLDC Hub Motor
+Speed : 25 to 35 Kmph
+Range : 60 to 80 km Depending On Level of Riding
+Breaking :Regenerative, Dual Disk 
+Weight : 19kg Only
+Cycle Condition : Brand new Sealed in Box. 85% Assembled
+
+L9 
+Cost : 24999 INR
+Battery Life : 800 Recharge Cycles and 80% DOD after
+Frame materal :Alloy Steel, Aluminium
+Battery :18Ah Li ion
+Motor : 250W 24V PMDC Motor
+Speed : 25 Kmph
+Range : 25 to 30 km Depending On Level of Riding
+Breaking : Regenerative, Dual Disk
+Weight : 19kg Only
+Cycle Condition : Brand new Sealed in Box. 85% Assembled
+

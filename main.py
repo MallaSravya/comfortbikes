@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
-from chat import get_completion_from_messages,collect_messages_text
+from chat import get_completion_from_messages,collect_messages_text,whatsappmsg
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -19,8 +19,12 @@ def home(request: Request):
 async def chat(message: Message):
     user_message = message.content
     response = collect_messages_text(user_message)
-
     return {"message": response}
+@app.get("/wapp")
+def whatsapp():
+    whatsappmsg()
+
+
 
 
 

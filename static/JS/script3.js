@@ -4,6 +4,7 @@ class Chatbox {
             openButton : document.querySelector('.chatbox__button'),
             chatBox : document.querySelector('.chatbox__support'),
             sendButton : document.querySelector('.send__button'),
+            billButton : document.querySelector('.bill')
         }
 
         this.state = false;
@@ -11,11 +12,11 @@ class Chatbox {
     };
 
     display() {
-        const {openButton, chatBox, sendButton} = this.args;
+        const {openButton, chatBox, sendButton,billButton} = this.args;
 
         openButton.addEventListener('click', () => this.toggleState(chatBox))
         sendButton.addEventListener('click', () => this.onSendButton(chatBox))
-        console.log("stage-1")
+        billButton.addEventListener('click', () => this.onbillButton(chatBox))
 
         const node = chatBox.querySelector('input');
         node.addEventListener('keyup', ({key}) => {
@@ -65,7 +66,21 @@ class Chatbox {
             this.updateChatText(chatBox)
         });
     }
-    
+    onbillButton(chatBox) {
+
+        fetch("/wapp", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        .then(r => {
+            console.log("aaaa")
+        }).catch((error) => {
+            console.log('Error:', error);
+        });
+    }
 
     updateChatText(chatBox) {
         var html = '';
